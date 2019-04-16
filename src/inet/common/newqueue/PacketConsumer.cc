@@ -18,6 +18,7 @@
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/PacketConsumer.h"
 #include "inet/common/Simsignals.h"
+#include "inet/common/StringFormat.h"
 
 namespace inet {
 namespace queue {
@@ -27,8 +28,9 @@ Define_Module(PacketConsumer);
 void PacketConsumer::initialize(int stage)
 {
     if (stage == INITSTAGE_LOCAL) {
+        displayStringTextFormat = par("displayStringTextFormat");
         inputGate = gate("in");
-        producer = check_and_cast<IPacketProducer *>(getConnectedModule(inputGate));
+        producer = dynamic_cast<IPacketProducer *>(getConnectedModule(inputGate));
         consumptionIntervalParameter = &par("consumptionInterval");
         consumptionTimer = new cMessage("ConsumptionTimer");
         WATCH(numPacket);
@@ -37,13 +39,18 @@ void PacketConsumer::initialize(int stage)
     else if (stage == INITSTAGE_LAST) {
         checkPushPacketSupport(inputGate);
         scheduleConsumptionTimer();
+        updateDisplayString();
     }
 }
 
 void PacketConsumer::handleMessage(cMessage *message)
 {
-    ASSERT(message == consumptionTimer);
-    producer->handleCanPushPacket(inputGate);
+    if (message == consumptionTimer) {
+        if (producer != nullptr)
+            producer->handleCanPushPacket(inputGate);
+    }
+    else
+        PacketConsumerBase::handleMessage(message);
 }
 
 void PacketConsumer::scheduleConsumptionTimer()
@@ -68,11 +75,31 @@ void PacketConsumer::consumePacket(Packet *packet)
 {
     EV_INFO << "Consuming packet " << packet->getName() << "." << endl;
     numPacket++;
-    totalLength += packet->getTotalLength();
+    totalLength += packet->getDataLength();
     PacketDropDetails details;
     details.setReason(OTHER_PACKET_DROP);
     emit(packetDroppedSignal, packet, &details);
+    updateDisplayString();
     delete packet;
+}
+
+void PacketConsumer::updateDisplayString()
+{
+    auto text = StringFormat::formatString(displayStringTextFormat, [&] (char directive) {
+        static std::string result;
+        switch (directive) {
+            case 'p':
+                result = std::to_string(numPacket);
+                break;
+            case 'l':
+                result = totalLength.str();
+                break;
+            default:
+                throw cRuntimeError("Unknown directive: %c", directive);
+        }
+        return result.c_str();
+    });
+    getDisplayString().setTagArg("t", 0, text);
 }
 
 } // namespace queue

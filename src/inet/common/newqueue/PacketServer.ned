@@ -20,6 +20,11 @@ package inet.common.newqueue;
 import inet.common.newqueue.base.PacketServerBase;
 import inet.common.newqueue.contract.IPacketServer;
 
+//
+// This module repeatedly pops packets from the connected packet provider and
+// after a processing delay it pushed the packet into the connected packet
+// consumer. The processing delay is processingTime + packetLength / processingBitrate.
+//
 simple PacketServer extends PacketServerBase like IPacketServer
 {
     parameters:

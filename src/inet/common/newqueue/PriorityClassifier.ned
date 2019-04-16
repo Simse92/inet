@@ -20,6 +20,10 @@ package inet.common.newqueue;
 import inet.common.newqueue.base.PacketClassifierBase;
 import inet.common.newqueue.contract.IPacketClassifier;
 
+//
+// This classifier pushes packets into the first non-full among its connected
+// packet consumers.
+//
 simple PriorityClassifier extends PacketClassifierBase like IPacketClassifier
 {
     parameters:

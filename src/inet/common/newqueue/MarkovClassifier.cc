@@ -15,6 +15,7 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
+#include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/MarkovClassifier.h"
 
 namespace inet {
@@ -35,11 +36,11 @@ void MarkovClassifier::initialize(int stage)
         inputGate = gate("in");
         for (int i = 0; i < gateSize("out"); i++) {
             auto outputGate = gate("out", i);
-            auto output = check_and_cast<IPacketCollector *>(outputGate->getPathEndGate()->getOwnerModule());
+            auto output = check_and_cast<IPacketCollector *>(getConnectedModule(outputGate));
             outputGates.push_back(outputGate);
             collectors.push_back(output);
         }
-        provider = check_and_cast<IPacketProvider *>(inputGate->getPathStartGate()->getOwnerModule());
+        provider = check_and_cast<IPacketProvider *>(getConnectedModule(inputGate));
         state = par("initialState");
         int numStates = gateSize("out");
         cStringTokenizer transitionProbabilitiesTokenizer(par("transitionProbabilities"));

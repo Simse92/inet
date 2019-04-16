@@ -20,6 +20,14 @@ package inet.common.newqueue;
 import inet.common.newqueue.base.PacketSchedulerBase;
 import inet.common.newqueue.contract.IPacketScheduler;
 
+//
+// This module connects one packet collector to multiple packet providers. It
+// can be popped for packets by the connected packet collector. When this
+// happens, the scheduler pops a packet from one of its packet providers based
+// on the configured scheduler function. The packet scheduler function takes a
+// list of packet providers and returns an integer which in turn is used for
+// determining the input gate.
+//
 simple PacketScheduler extends PacketSchedulerBase like IPacketScheduler
 {
     parameters:

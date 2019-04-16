@@ -29,7 +29,7 @@ void PacketDuplicator::initialize(int stage)
         inputGate = gate("in");
         producer = dynamic_cast<IPacketProducer *>(findConnectedModule(inputGate));
         outputGate = gate("out");
-        consumer = check_and_cast<IPacketConsumer *>(outputGate->getPathEndGate()->getOwnerModule());
+        consumer = check_and_cast<IPacketConsumer *>(getConnectedModule(outputGate));
     }
 }
 

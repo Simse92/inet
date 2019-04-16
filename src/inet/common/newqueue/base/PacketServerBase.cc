@@ -15,6 +15,7 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
+#include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/base/PacketServerBase.h"
 
 namespace inet {
@@ -24,9 +25,9 @@ void PacketServerBase::initialize(int stage)
 {
     if (stage == INITSTAGE_LOCAL) {
         inputGate = gate("in");
-        provider = check_and_cast<IPacketProvider *>(inputGate->getPathStartGate()->getOwnerModule());
+        provider = check_and_cast<IPacketProvider *>(getConnectedModule(inputGate));
         outputGate = gate("out");
-        consumer = check_and_cast<IPacketConsumer *>(outputGate->getPathEndGate()->getOwnerModule());
+        consumer = check_and_cast<IPacketConsumer *>(getConnectedModule(outputGate));
     }
     else if (stage == INITSTAGE_LAST) {
         checkPopPacketSupport(inputGate);

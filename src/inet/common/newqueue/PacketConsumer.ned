@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2004 Andras Varga
+// Copyright (C) OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -12,18 +12,23 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program; if not, see <http://www.gnu.org/licenses/>.
+// along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
 package inet.common.newqueue;
 
+import inet.common.newqueue.base.PacketSinkBase;
 import inet.common.newqueue.contract.IPacketConsumer;
 
-simple PacketConsumer like IPacketConsumer
+//
+// This module is a passive packet sink which is pushed with packets by the
+// connected packet producer. All pushed packets are counted and dropped.
+//
+simple PacketConsumer extends PacketSinkBase like IPacketConsumer
 {
     parameters:
-        volatile double consumptionInterval @unit(s) = default(0s);
-        @display("i=block/sink");
+        volatile double consumptionInterval @unit(s) = default(0s); // elapsed time between two subsequent packets pushed by the connected packet producer
+        @class(PacketConsumer);
         @signal[packetPushed](type=inet::Packet);
         @signal[packetDropped](type=inet::Packet);
         @statistic[packetDropped](title="packet drops"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);

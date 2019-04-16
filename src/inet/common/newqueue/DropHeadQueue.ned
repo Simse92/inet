@@ -17,21 +17,9 @@
 
 package inet.common.newqueue;
 
-import inet.common.newqueue.base.PacketSourceBase;
-import inet.common.newqueue.contract.IPacketProducer;
-
-//
-// This module is an active packet source which pushes packets into the connected
-// packet consumer.
-//
-simple PacketProducer extends PacketSourceBase like IPacketProducer
+simple DropHeadQueue extends PacketQueue
 {
     parameters:
-        volatile double productionInterval @unit(s);
-        @class(PacketProducer);
-        @display("i=block/source");
-        @signal[packetGenerated](type=inet::Packet);
-        @statistic[packetGenerated](title="generated packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
-    gates:
-        output out @labels(push);
+        frameCapacity = default(100);
+        dropperClass = default("inet::queue::DropHead");
 }

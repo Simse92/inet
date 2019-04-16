@@ -17,9 +17,14 @@
 
 package inet.common.newqueue;
 
+import inet.common.newqueue.base.PacketSourceBase;
 import inet.common.newqueue.contract.IPacketProvider;
 
-simple PacketProvider extends PacketCreatorBase like IPacketProvider
+//
+// This module is a passive packet source which can be popped for packets from
+// the connected packet collector.
+//
+simple PacketProvider extends PacketSourceBase like IPacketProvider
 {
     parameters:
         volatile double providingInterval @unit(s) = default(0s);

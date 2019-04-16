@@ -15,8 +15,8 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef __INET_PACKETCONSUMER_H
-#define __INET_PACKETCONSUMER_H
+#ifndef __INET_PACKETCLONER_H
+#define __INET_PACKETCLONER_H
 
 #include "inet/common/newqueue/base/PacketConsumerBase.h"
 #include "inet/common/newqueue/contract/IPacketProducer.h"
@@ -25,42 +25,32 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketConsumer : public PacketConsumerBase, public IPacketQueueingElement
+class INET_API PacketCloner : public PacketConsumerBase, public IPacketProducer, public IPacketQueueingElement
 {
   protected:
-    const char *displayStringTextFormat = nullptr;
-
     cGate *inputGate = nullptr;
     IPacketProducer *producer = nullptr;
 
-    cPar *consumptionIntervalParameter = nullptr;
-    cMessage *consumptionTimer = nullptr;
-
-    int numPacket = 0;
-    b totalLength = b(0);
+    std::vector<cGate *> outputGates;
+    std::vector<IPacketConsumer *> consumers;
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
     virtual void initialize(int stage) override;
-    virtual void handleMessage(cMessage *message) override;
-
-    virtual void scheduleConsumptionTimer();
-    virtual void consumePacket(Packet *packet);
-    virtual void updateDisplayString();
 
   public:
-    virtual ~PacketConsumer() { cancelAndDelete(consumptionTimer); }
+    virtual IPacketConsumer *getConsumer(cGate *gate) override { return consumers[gate->getIndex()]; }
 
-    virtual bool supportsPushPacket(cGate *gate) override { return gate == inputGate; }
+    virtual bool supportsPushPacket(cGate *gate) override { return true; }
     virtual bool supportsPopPacket(cGate *gate) override { return false; }
 
-    virtual bool canPushSomePacket(cGate *gate) override { return !consumptionTimer->isScheduled(); }
-    virtual bool canPushPacket(Packet *packet, cGate *gate) override { return canPushSomePacket(gate); }
     virtual void pushPacket(Packet *packet, cGate *gate) override;
+
+    virtual void handleCanPushPacket(cGate *gate) override;
 };
 
 } // namespace queue
 } // namespace inet
 
-#endif // ifndef __INET_PACKETCONSUMER_H
+#endif // ifndef __INET_PACKETCLONER_H
 

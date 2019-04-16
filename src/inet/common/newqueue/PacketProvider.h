@@ -18,7 +18,7 @@
 #ifndef __INET_PACKETPROVIDER_H
 #define __INET_PACKETPROVIDER_H
 
-#include "inet/common/newqueue/base/PacketCreatorBase.h"
+#include "inet/common/newqueue/base/PacketSourceBase.h"
 #include "inet/common/newqueue/base/PacketProviderBase.h"
 #include "inet/common/newqueue/contract/IPacketQueueingElement.h"
 #include "inet/common/newqueue/contract/IPacketCollector.h"
@@ -26,7 +26,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketProvider : public PacketCreatorBase, public PacketProviderBase, public IPacketQueueingElement
+class INET_API PacketProvider : public PacketSourceBase, public PacketProviderBase, public IPacketQueueingElement
 {
   protected:
     cGate *outputGate = nullptr;

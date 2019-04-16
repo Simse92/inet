@@ -18,6 +18,7 @@
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/PacketProducer.h"
 #include "inet/common/Simsignals.h"
+#include "inet/common/StringFormat.h"
 
 namespace inet {
 namespace queue {
@@ -26,15 +27,19 @@ Define_Module(PacketProducer);
 
 void PacketProducer::initialize(int stage)
 {
-    PacketCreatorBase::initialize(stage);
+    PacketSourceBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
+        displayStringTextFormat = par("displayStringTextFormat");
         outputGate = gate("out");
         consumer = check_and_cast<IPacketConsumer *>(getConnectedModule(outputGate));
         productionIntervalParameter = &par("productionInterval");
         productionTimer = new cMessage("ProductionTimer");
     }
-    else if (stage == INITSTAGE_LAST)
+    else if (stage == INITSTAGE_LAST) {
         checkPushPacketSupport(outputGate);
+//        scheduleProductionTimer();
+        updateDisplayString();
+    }
 }
 
 void PacketProducer::handleMessage(cMessage *message)
@@ -58,10 +63,8 @@ void PacketProducer::producePacket()
 {
     auto packet = createPacket();
     EV_INFO << "Producing packet " << packet->getName() << "." << endl;
-    animateSend(packet, outputGate);
-    consumer->pushPacket(packet, outputGate->getPathEndGate());
-    numPacket++;
-    totalLength += packet->getTotalLength();
+    pushOrSendPacket(packet, outputGate, consumer);
+    updateDisplayString();
 }
 
 void PacketProducer::handleCanPushPacket(cGate *gate)

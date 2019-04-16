@@ -32,7 +32,7 @@ class INET_API IPacketFilterFunction
     virtual ~IPacketFilterFunction() {}
 
     /**
-     * Returns true if the filter drops the given packet.
+     * Returns true if the filter matches the given packet.
      */
     virtual bool matchesPacket(Packet *packet) const = 0;
 };

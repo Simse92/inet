@@ -16,41 +16,35 @@
 //
 
 #include "inet/common/ModuleAccess.h"
-#include "inet/common/newqueue/base/PacketDuplicatorBase.h"
-#include "inet/common/Simsignals.h"
+#include "inet/common/newqueue/PacketCloner.h"
 
 namespace inet {
 namespace queue {
 
-void PacketDuplicatorBase::initialize(int stage)
+Define_Module(PacketCloner);
+
+void PacketCloner::initialize(int stage)
 {
     if (stage == INITSTAGE_LOCAL) {
         inputGate = gate("in");
         producer = dynamic_cast<IPacketProducer *>(findConnectedModule(inputGate));
-        outputGate = gate("out");
-        consumer = check_and_cast<IPacketConsumer *>(getConnectedModule(outputGate));
-    }
-    else if (stage == INITSTAGE_LAST) {
-        checkPushPacketSupport(inputGate);
-        checkPushPacketSupport(outputGate);
+        for (int i = 0; i < gateSize("out"); i++) {
+            auto outputGate = gate("out", i);
+            auto consumer = dynamic_cast<IPacketConsumer *>(getConnectedModule(outputGate));
+            outputGates.push_back(outputGate);
+            consumers.push_back(consumer);
+        }
     }
 }
 
-void PacketDuplicatorBase::pushPacket(Packet *packet, cGate *gate)
+void PacketCloner::pushPacket(Packet *packet, cGate *gate)
 {
-    int numDuplicates = getNumPacketDuplicates(packet);
-    for (int i = 0; i < numDuplicates; i++) {
-        EV_INFO << "Forwarding duplicate packet " << packet->getName() << "." << endl;
-        auto duplicate = packet->dup();
-        animateSend(duplicate, outputGate);
-        consumer->pushPacket(duplicate, outputGate->getPathEndGate());
-    }
-    EV_INFO << "Forwarding original packet " << packet->getName() << "." << endl;
-    animateSend(packet, outputGate);
-    consumer->pushPacket(packet, outputGate->getPathEndGate());
+    int numGates = outputGates.size();
+    for (int i = 0; i < numGates; i++)
+        pushOrSendPacket(i == numGates - 1 ? packet : packet->dup(), outputGates[i], consumers[i]);
 }
 
-void PacketDuplicatorBase::handleCanPushPacket(cGate *gate)
+void PacketCloner::handleCanPushPacket(cGate *gate)
 {
     if (producer != nullptr)
         producer->handleCanPushPacket(inputGate);

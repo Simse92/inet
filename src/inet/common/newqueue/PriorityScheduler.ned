@@ -21,10 +21,8 @@ import inet.common.newqueue.base.PacketSchedulerBase;
 import inet.common.newqueue.contract.IPacketScheduler;
 
 //
-// This module implements a strict priority scheduler.
-//
-// Packets arrived at the 0th gate are served first,
-// then the packets arrived at the 1st gates, and so on.
+// This classifier pops packets from the first non-empty among its connected
+// packet providers.
 //
 simple PriorityScheduler extends PacketSchedulerBase like IPacketScheduler
 {

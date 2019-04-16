@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2004 Andras Varga
+// Copyright (C) OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -12,19 +12,23 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program; if not, see <http://www.gnu.org/licenses/>.
+// along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
 package inet.common.newqueue;
 
 import inet.common.newqueue.contract.IPacketBuffer;
 
+//
+// This module provides packet storage primarily for sharing resources between
+// multiple packet queues.
+//
 simple PacketBuffer like IPacketBuffer
 {
     parameters:
-        int frameCapacity = default(-1);
-        int dataCapacity @unit(b) = default(-1b);
-        string displayStringTextFormat = default("%p packets\n%l");
+        int frameCapacity = default(-1); // maximum number of packets in the queue, no limit by default
+        int dataCapacity @unit(b) = default(-1b); // maximum total length of packets in the queue, no limit by default
+        string displayStringTextFormat = default("%p packets\n%l"); // %p number of packet, %l total length
         @display("i=block/buffer");
         @signal[packetAdded](type=inet::Packet);
         @signal[packetRemoved](type=inet::Packet);

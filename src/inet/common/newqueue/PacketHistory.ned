@@ -17,21 +17,31 @@
 
 package inet.common.newqueue;
 
-import inet.common.newqueue.base.PacketSourceBase;
+import inet.common.newqueue.contract.IPacketConsumer;
 import inet.common.newqueue.contract.IPacketProducer;
+import inet.common.newqueue.contract.IPacketQueue;
 
-//
-// This module is an active packet source which pushes packets into the connected
-// packet consumer.
-//
-simple PacketProducer extends PacketSourceBase like IPacketProducer
+module PacketHistory like IPacketConsumer, IPacketProducer
 {
     parameters:
-        volatile double productionInterval @unit(s);
-        @class(PacketProducer);
-        @display("i=block/source");
-        @signal[packetGenerated](type=inet::Packet);
-        @statistic[packetGenerated](title="generated packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
+        int size = default(100);
+        @display("i=block/passiveq");
     gates:
+        input in @labels(push);
         output out @labels(push);
+    submodules:
+        cloner: PacketCloner {
+            parameters:
+                @display("p=100,100");
+        }
+        queue: <default("DropHeadQueue")> like IPacketQueue {
+            parameters:
+                frameCapacity = default(size);
+                @display("p=100,200");
+        }
+    connections allowunconnected:
+        in --> { @display("m=w"); } --> cloner.in;
+        cloner.out++ --> { @display("m=e"); } --> out;
+        cloner.out++ --> queue.in;
 }
+

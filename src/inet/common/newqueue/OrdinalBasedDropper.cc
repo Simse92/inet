@@ -15,6 +15,7 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
+#include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/OrdinalBasedDropper.h"
 #include "inet/common/Simsignals.h"
 
@@ -31,7 +32,7 @@ void OrdinalBasedDropper::initialize(int stage)
         numDropped = 0;
         generateFurtherDrops = false;
 
-        consumer = dynamic_cast<IPacketConsumer *>(gate("out")->getPathEndGate()->getOwnerModule());
+        consumer = dynamic_cast<IPacketConsumer *>(getConnectedModule(outputGate));
 
         WATCH(numPackets);
         WATCH(numDropped);

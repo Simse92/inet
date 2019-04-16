@@ -18,14 +18,14 @@
 #ifndef __INET_PACKETPRODUCER_H
 #define __INET_PACKETPRODUCER_H
 
-#include "inet/common/newqueue/base/PacketCreatorBase.h"
+#include "inet/common/newqueue/base/PacketSourceBase.h"
 #include "inet/common/newqueue/contract/IPacketProducer.h"
 #include "inet/common/newqueue/contract/IPacketQueueingElement.h"
 
 namespace inet {
 namespace queue {
 
-class INET_API PacketProducer : public PacketCreatorBase, public IPacketProducer, public IPacketQueueingElement
+class INET_API PacketProducer : public PacketSourceBase, public IPacketProducer, public IPacketQueueingElement
 {
   protected:
     cGate *outputGate = nullptr;

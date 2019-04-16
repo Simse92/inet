@@ -20,12 +20,16 @@ package inet.common.newqueue;
 import inet.common.newqueue.base.PacketQueueBase;
 import inet.common.newqueue.contract.IPacketQueue;
 
+//
+// This compound module serves as a base module for complex packet queues formed
+// by combining several queueing components.
+//
 module CompoundPacketQueue extends PacketQueueBase like IPacketQueue
 {
     parameters:
-        int frameCapacity = default(-1);
-        int dataCapacity @unit(b) = default(-1b);
-        string displayStringTextFormat = default("%p packets");
+        int frameCapacity = default(-1); // maximum number of packets in the queue, no limit by default
+        int dataCapacity @unit(b) = default(-1b); // maximum total length of packets in the queue, no limit by default
+        string displayStringTextFormat = default("%p packets"); // %p number of packet, %l total length, %n name of next packet
         @class(CompoundPacketQueue);
         @signal[packetPushed](type=inet::Packet);
         @signal[packetPopped](type=inet::Packet);

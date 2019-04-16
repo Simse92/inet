@@ -15,6 +15,7 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
+#include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/MarkovScheduler.h"
 
 namespace inet {
@@ -34,11 +35,11 @@ void MarkovScheduler::initialize(int stage)
         outputGate = gate("out");
         for (int i = 0; i < gateSize("in"); i++) {
             auto inputGate = gate("in", i);
-            auto input = check_and_cast<IPacketProducer *>(inputGate->getPathStartGate()->getOwnerModule());
+            auto input = check_and_cast<IPacketProducer *>(getConnectedModule(inputGate));
             inputGates.push_back(inputGate);
             producers.push_back(input);
         }
-        consumer = check_and_cast<IPacketConsumer *>(outputGate->getPathEndGate()->getOwnerModule());
+        consumer = check_and_cast<IPacketConsumer *>(getConnectedModule(outputGate));
         state = par("initialState");
         int numStates = gateSize("in");
         cStringTokenizer transitionProbabilitiesTokenizer(par("transitionProbabilities"));

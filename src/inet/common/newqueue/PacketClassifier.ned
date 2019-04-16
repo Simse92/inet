@@ -21,8 +21,12 @@ import inet.common.newqueue.base.PacketClassifierBase;
 import inet.common.newqueue.contract.IPacketClassifier;
 
 //
-// This module sends received packets according to the provided classifer. The
-// classifier can be provided as a C++ class or as a plain C function. 
+// This module connects one packet producer to multiple packet consumers. It
+// can be pushed with packets from the connected packet producer. When this
+// happens, the classifier pushes the packet to one of its connected packet
+// consumers based on the configured packet classifier function. The packet
+// classifier function takes a packet and returns an integer which in turn
+// is used for determining the output gate.
 //
 simple PacketClassifier extends PacketClassifierBase like IPacketClassifier
 {

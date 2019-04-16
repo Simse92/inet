@@ -15,23 +15,30 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
-package inet.common.newqueue;
+#ifndef __INET_PACKETSINKBASE_H
+#define __INET_PACKETSINKBASE_H
 
-import inet.common.newqueue.base.PacketSourceBase;
-import inet.common.newqueue.contract.IPacketProducer;
+#include "inet/common/newqueue/base/PacketQueueingElementBase.h"
+#include "inet/common/packet/Packet.h"
 
-//
-// This module is an active packet source which pushes packets into the connected
-// packet consumer.
-//
-simple PacketProducer extends PacketSourceBase like IPacketProducer
+namespace inet {
+namespace queue {
+
+class INET_API PacketSinkBase : public PacketQueueingElementBase
 {
-    parameters:
-        volatile double productionInterval @unit(s);
-        @class(PacketProducer);
-        @display("i=block/source");
-        @signal[packetGenerated](type=inet::Packet);
-        @statistic[packetGenerated](title="generated packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
-    gates:
-        output out @labels(push);
-}
+  protected:
+    const char *displayStringTextFormat = nullptr;
+
+    int numPacket = 0;
+    b totalLength = b(0);
+
+  protected:
+    virtual void initialize(int stage) override;
+    virtual void updateDisplayString();
+};
+
+} // namespace queue
+} // namespace inet
+
+#endif // ifndef __INET_PACKETSINKBASE_H
+

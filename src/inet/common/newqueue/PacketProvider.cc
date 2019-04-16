@@ -26,7 +26,7 @@ Define_Module(PacketProvider);
 
 void PacketProvider::initialize(int stage)
 {
-    PacketCreatorBase::initialize(stage);
+    PacketSourceBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
         outputGate = gate("out");
         collector = check_and_cast<IPacketCollector *>(getConnectedModule(outputGate));
@@ -36,6 +36,7 @@ void PacketProvider::initialize(int stage)
     else if (stage == INITSTAGE_LAST) {
         checkPopPacketSupport(outputGate);
         scheduleProvidingTimer();
+        updateDisplayString();
     }
 }
 
@@ -86,8 +87,6 @@ Packet *PacketProvider::providePacket(cGate *gate)
         nextPacket = nullptr;
     }
     EV_INFO << "Providing packet " << packet->getName() << "." << endl;
-    numPacket++;
-    totalLength += packet->getTotalLength();
     return packet;
 }
 

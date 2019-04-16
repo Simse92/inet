@@ -15,23 +15,11 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
-package inet.common.newqueue;
+package inet.common.newqueue.base;
 
-import inet.common.newqueue.base.PacketSourceBase;
-import inet.common.newqueue.contract.IPacketProducer;
-
-//
-// This module is an active packet source which pushes packets into the connected
-// packet consumer.
-//
-simple PacketProducer extends PacketSourceBase like IPacketProducer
+simple PacketSinkBase
 {
     parameters:
-        volatile double productionInterval @unit(s);
-        @class(PacketProducer);
-        @display("i=block/source");
-        @signal[packetGenerated](type=inet::Packet);
-        @statistic[packetGenerated](title="generated packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
-    gates:
-        output out @labels(push);
+        string displayStringTextFormat = default("%p packets\n%l"); // %p number of packet, %l total length
+        @display("i=block/sink");
 }

@@ -20,6 +20,11 @@ package inet.common.newqueue;
 import inet.common.newqueue.contract.IPacketCollector;
 import inet.common.newqueue.contract.IPacketProvider;
 
+//
+// This module connects multiple packet collectors to one packet provider. When
+// a packet is popped by the connected packet provider, then the demultiplexer
+// simply pops a packet from the connected packet provider.
+//
 simple PacketDemultiplexer like IPacketCollector // TODO: , IPacketProvider // out gate is vector
 {
     parameters:

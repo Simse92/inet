@@ -28,7 +28,7 @@ void PacketClassifierBase::initialize(int stage)
         producer = dynamic_cast<IPacketProducer *>(findConnectedModule(inputGate));
         for (int i = 0; i < gateSize("out"); i++) {
             auto outputGate = gate("out", i);
-            auto consumer = dynamic_cast<IPacketConsumer *>(outputGate->getPathEndGate()->getOwnerModule());
+            auto consumer = dynamic_cast<IPacketConsumer *>(getConnectedModule(outputGate));
             outputGates.push_back(outputGate);
             consumers.push_back(consumer);
         }

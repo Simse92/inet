@@ -20,12 +20,40 @@ package inet.common.newqueue;
 import inet.common.newqueue.base.PacketQueueBase;
 import inet.common.newqueue.contract.IPacketQueue;
 
+//
+// This module implements a widely configurable packet queue, which is suitable
+// among others, to be used in MAC protocols, traffic conditioning, and quality
+// of services. This module can be used on its own, but it's also often supplemented
+// by additional queueing components such as servers, classifiers, schedulers,
+// and multiplexers. This kind of composition allows to form a larger module
+// which can act as a packet queue with more complex behavior.
+//
+// By default, this module acts as a standard FIFO queue with an infinite
+// internal buffer. The queue can also be configured to limit the number of
+// packets and the total data length of packets in the internal buffer. It's
+// also possible to use an external buffer, which can be shared among multiple
+// queues. In this case, the storage limits are configured on the packet buffer,
+// which also takes care of dropping packets from either this queue or some
+// other queues as necessary.
+//
+// If the queue becomes overloaded by surpassing the limits of the internal
+// buffer, an error is raised unless a packet drop algorithm is configured.
+// When a packet drop algorithm is used, then one or more packets are dropped
+// until the storage limits are met according to the dropping strategy, but
+// only after the new packet has been inserted into the queue. This method
+// allows higher priority packets to take precedence over already stored lower
+// priority packets even if the queue is already full.
+//
+// The queue can also keep the packets sorted according to a comparator function.
+// If a comparator is not configured, then packets are pushed at the back of the
+// queue and they are kept in this order.
+//
 simple PacketQueue extends PacketQueueBase like IPacketQueue
 {
     parameters:
         int frameCapacity = default(-1); // maximum number of packets in the queue, no limit by default
         int dataCapacity @unit(b) = default(-1b); // maximum total length of packets in the queue, no limit by default
-        string dropperClass @enum("dropHead", "dropTail") = default(""); // determines which packets are dropped when the queue is overloaded, undefined by default; the parameter must be the name of a C++ class which implements the IPacketDropperFunction C++ interface and is registered via Register_Class
+        string dropperClass @enum("dropHead", "dropTail") = default(""); // determines which packets are dropped when the queue is overloaded, packets are dropped at the tail of the queue by default; the parameter must be the name of a C++ class which implements the IPacketDropperFunction C++ interface and is registered via Register_Class
         string comparatorClass = default(""); // determines the order of packets in the queue, insertion order by default; the parameter must be the name of a C++ class which implements the IPacketComparatorFunction C++ interface and is registered via Register_Class
         string bufferModule = default(""); // relative module path to the IPacketBuffer module used by this queue, implicit buffer by default
         string displayStringTextFormat = default("%p packets\n%l"); // %p number of packet, %l total length, %n name of next popped packet

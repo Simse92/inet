@@ -28,6 +28,8 @@ namespace queue {
 class INET_API PacketCollector : public PacketQueueingElementBase, public IPacketCollector, public IPacketQueueingElement
 {
   public:
+    const char *displayStringTextFormat = nullptr;
+
     cGate *inputGate = nullptr;
     IPacketProvider *provider = nullptr;
 
@@ -44,6 +46,7 @@ class INET_API PacketCollector : public PacketQueueingElementBase, public IPacke
 
     virtual void scheduleCollectionTimer();
     virtual void collectPacket();
+    virtual void updateDisplayString();
 
   public:
     virtual ~PacketCollector() { cancelAndDelete(collectionTimer); }

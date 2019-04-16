@@ -17,21 +17,15 @@
 
 package inet.common.newqueue;
 
-import inet.common.newqueue.base.PacketSourceBase;
+import inet.common.newqueue.contract.IPacketConsumer;
 import inet.common.newqueue.contract.IPacketProducer;
 
-//
-// This module is an active packet source which pushes packets into the connected
-// packet consumer.
-//
-simple PacketProducer extends PacketSourceBase like IPacketProducer
+simple PacketCloner like IPacketConsumer
+						 // IPacketProducer // TODO: vector gate 
 {
     parameters:
-        volatile double productionInterval @unit(s);
-        @class(PacketProducer);
-        @display("i=block/source");
-        @signal[packetGenerated](type=inet::Packet);
-        @statistic[packetGenerated](title="generated packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
+        @display("i=block/star");
     gates:
-        output out @labels(push);
+        input in @labels(push);
+        output out[] @labels(push);
 }

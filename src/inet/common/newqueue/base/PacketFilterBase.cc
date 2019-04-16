@@ -29,8 +29,8 @@ void PacketFilterBase::initialize(int stage)
         outputGate = gate("out");
         producer = dynamic_cast<IPacketProducer *>(findConnectedModule(inputGate));
         collector = dynamic_cast<IPacketCollector *>(findConnectedModule(outputGate));
-        provider = dynamic_cast<IPacketProvider *>(inputGate->getPathStartGate()->getOwnerModule());
-        consumer = dynamic_cast<IPacketConsumer *>(outputGate->getPathEndGate()->getOwnerModule());
+        provider = dynamic_cast<IPacketProvider *>(getConnectedModule(inputGate));
+        consumer = dynamic_cast<IPacketConsumer *>(getConnectedModule(outputGate));
     }
     else if (stage == INITSTAGE_LAST) {
         if (consumer != nullptr) {

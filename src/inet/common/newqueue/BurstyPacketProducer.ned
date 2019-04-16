@@ -19,13 +19,24 @@ package inet.common.newqueue;
 
 import inet.common.newqueue.contract.IPacketProducer;
 
-simple PacketCreatorBase
+module BurstyPacketProducer like IPacketProducer
 {
     parameters:
-        string packetNameFormat = default("%n-%c");
-        string packetRepresentation @units("bitCount", "bits", "byteCount", "bytes") = default("byteCount");
-        volatile int packetLength @unit(b);
         @display("i=block/source");
-        @signal[packetCreated](type=inet::Packet);
-        @statistic[packetCreated](title="created packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
+    gates:
+        output out;
+    submodules:
+        normalProducer: PacketProducer {
+            @display("p=100,100");
+        }
+        burstProducer: PacketProducer {
+            @display("p=300,100");
+        }
+        scheduler: MarkovScheduler {
+            @display("p=200,200");
+        }
+    connections allowunconnected:
+        normalProducer.out --> scheduler.in++;
+        burstProducer.out --> scheduler.in++;
+        scheduler.out --> out;
 }

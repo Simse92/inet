@@ -1,4 +1,4 @@
- - add PacketTrafficConditioner class which contains handleMessage and sends out packets
+ - rename newqueue package and folder to queueing? 
  - document PacketQueue cannot delay packets, if a packetqueue is not empty then it can be popped!
  - CompoundPacketQueue -> CompoundPacketQueueBase?, CompoundTrafficConditioner -> (Compound)TrafficConditionerBase?
  - change all queue users (MACs) to: queue->pushPacket(), !queue->canPopSomePacket() && !isTransmitting(), startTransmitting(queue->popPacket)

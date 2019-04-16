@@ -15,20 +15,23 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
-#include "inet/common/newqueue/base/PacketCreatorBase.h"
+#include "inet/applications/base/ApplicationPacket_m.h"
+#include "inet/common/newqueue/base/PacketSourceBase.h"
 #include "inet/common/packet/chunk/BitCountChunk.h"
 #include "inet/common/packet/chunk/BitsChunk.h"
 #include "inet/common/packet/chunk/ByteCountChunk.h"
 #include "inet/common/packet/chunk/BytesChunk.h"
 #include "inet/common/Simsignals.h"
 #include "inet/common/StringFormat.h"
+#include "inet/common/TimeTag_m.h"
 
 namespace inet {
 namespace queue {
 
-void PacketCreatorBase::initialize(int stage)
+void PacketSourceBase::initialize(int stage)
 {
     if (stage == INITSTAGE_LOCAL) {
+        displayStringTextFormat = par("displayStringTextFormat");
         packetNameFormat = par("packetNameFormat");
         packetRepresentation = par("packetRepresentation");
         packetLengthParameter = &par("packetLength");
@@ -37,7 +40,26 @@ void PacketCreatorBase::initialize(int stage)
     }
 }
 
-const char *PacketCreatorBase::createPacketName()
+void PacketSourceBase::updateDisplayString()
+{
+    auto text = StringFormat::formatString(displayStringTextFormat, [&] (char directive) {
+        static std::string result;
+        switch (directive) {
+            case 'p':
+                result = std::to_string(numPacket);
+                break;
+            case 'l':
+                result = totalLength.str();
+                break;
+            default:
+                throw cRuntimeError("Unknown directive: %c", directive);
+        }
+        return result.c_str();
+    });
+    getDisplayString().setTagArg("t", 0, text);
+}
+
+const char *PacketSourceBase::createPacketName()
 {
     return StringFormat::formatString(packetNameFormat, [&] (char directive) {
         static std::string result;
@@ -55,7 +77,7 @@ const char *PacketCreatorBase::createPacketName()
     });
 }
 
-const Ptr<const Chunk> PacketCreatorBase::createPacketContent()
+Ptr<Chunk> PacketSourceBase::createPacketContent()
 {
     auto packetLength = b(packetLengthParameter->intValue());
     if (!strcmp(packetRepresentation, "bitCount"))
@@ -84,15 +106,24 @@ const Ptr<const Chunk> PacketCreatorBase::createPacketContent()
         packetContent->setBytes(bytes);
         return packetContent;
     }
+    else if (!strcmp(packetRepresentation, "applicationPacket")) {
+        const auto& packetContent = makeShared<ApplicationPacket>();
+        packetContent->setChunkLength(B(packetLength));
+        packetContent->setSequenceNumber(numPacket);
+        return packetContent;
+    }
     else
         throw cRuntimeError("Unknown representation");
 }
 
-Packet *PacketCreatorBase::createPacket()
+Packet *PacketSourceBase::createPacket()
 {
-    const auto packetName = createPacketName();
-    const auto& packetContent = createPacketContent();
+    auto packetName = createPacketName();
+    auto packetContent = createPacketContent();
+    packetContent->addTag<CreationTimeTag>()->setCreationTime(simTime());
     auto packet = new Packet(packetName, packetContent);
+    numPacket++;
+    totalLength += packet->getDataLength();
     emit(packetCreatedSignal, packet);
     return packet;
 }

@@ -15,8 +15,8 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef __INET_PACKETCREATORBASE_H
-#define __INET_PACKETCREATORBASE_H
+#ifndef __INET_PACKETSOURCEBASE_H
+#define __INET_PACKETSOURCEBASE_H
 
 #include "inet/common/newqueue/base/PacketQueueingElementBase.h"
 #include "inet/common/packet/Packet.h"
@@ -24,9 +24,10 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketCreatorBase : public PacketQueueingElementBase
+class INET_API PacketSourceBase : public PacketQueueingElementBase
 {
   protected:
+    const char *displayStringTextFormat = nullptr;
     const char *packetNameFormat = nullptr;
     const char *packetRepresentation = nullptr;
     cPar *packetLengthParameter = nullptr;
@@ -37,17 +38,18 @@ class INET_API PacketCreatorBase : public PacketQueueingElementBase
   protected:
     virtual void initialize(int stage) override;
     virtual void handleMessage(cMessage *message) override { throw cRuntimeError("Invalid operation"); }
+    virtual void updateDisplayString();
 
     virtual const char *createPacketName();
-    virtual const Ptr<const Chunk> createPacketContent();
+    virtual Ptr<Chunk> createPacketContent();
     virtual Packet *createPacket();
 
   public:
-    virtual ~PacketCreatorBase() { }
+    virtual ~PacketSourceBase() { }
 };
 
 } // namespace queue
 } // namespace inet
 
-#endif // ifndef __INET_PACKETCREATORBASE_H
+#endif // ifndef __INET_PACKETSOURCEBASE_H
 

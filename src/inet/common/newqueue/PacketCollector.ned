@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2004 Andras Varga
+// Copyright (C) OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -12,18 +12,23 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program; if not, see <http://www.gnu.org/licenses/>.
+// along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
 package inet.common.newqueue;
 
+import inet.common.newqueue.base.PacketSinkBase;
 import inet.common.newqueue.contract.IPacketCollector;
 
-simple PacketCollector like IPacketCollector
+//
+// This module is an active packet sink which pops packets from the connected
+// packet provider. All popped packets are counted and dropped.
+//
+simple PacketCollector extends PacketSinkBase like IPacketCollector
 {
     parameters:
-        volatile double collectionInterval @unit(s);
-        @display("i=block/sink");
+        volatile double collectionInterval @unit(s); // elapsed time between two subsequent packets popped from the connected packet provider
+        @class(PacketCollector);
         @signal[packetDropped](type=inet::Packet);
         @statistic[packetDropped](title="packet drops"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
     gates:
