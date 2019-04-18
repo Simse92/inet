@@ -25,6 +25,4 @@ simple PacketSourceBase
         string packetRepresentation @units("bitCount","bits","byteCount","bytes","applicationPacket") = default("byteCount");
         volatile int packetLength @unit(b);
         @display("i=block/source");
-        @signal[packetCreated](type=inet::Packet);
-        @statistic[packetCreated](title="created packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
 }

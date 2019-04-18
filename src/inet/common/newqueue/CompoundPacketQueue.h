@@ -56,12 +56,10 @@ class INET_API CompoundPacketQueue : public PacketQueueBase
     virtual void removePacket(Packet *packet) override;
 
     virtual bool supportsPushPacket(cGate *gate) override { return inputGate == gate; }
-    virtual int getNumPushablePackets(cGate *gate) override { return -1; }
     virtual bool canPushPacket(Packet *packet, cGate *gate) override { return true; }
     virtual void pushPacket(Packet *packet, cGate *gate) override;
 
     virtual bool supportsPopPacket(cGate *gate) override { return outputGate == gate; }
-    virtual int getNumPoppablePackets(cGate *gate) override { return -1; }
     virtual Packet *canPopPacket(cGate *gate) override { throw cRuntimeError("Invalid operation"); }
     virtual Packet *popPacket(cGate *gate) override;
 };

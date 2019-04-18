@@ -25,7 +25,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketMultiplexer : public PacketConsumerBase, public IPacketProducer, public IPacketQueueingElement
+class INET_API PacketMultiplexer : public PacketConsumerBase, public IPacketProducer
 {
   protected:
     std::vector<cGate *> inputGates;

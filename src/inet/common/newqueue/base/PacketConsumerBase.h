@@ -18,19 +18,18 @@
 #ifndef __INET_PACKETCONSUMERBASE_H
 #define __INET_PACKETCONSUMERBASE_H
 
-#include "inet/common/newqueue/base/PacketQueueingElementBase.h"
+#include "inet/common/newqueue/base/PacketSinkBase.h"
 #include "inet/common/newqueue/contract/IPacketConsumer.h"
 
 namespace inet {
 namespace queue {
 
-class INET_API PacketConsumerBase : public PacketQueueingElementBase, public IPacketConsumer
+class INET_API PacketConsumerBase : public PacketSinkBase, public IPacketConsumer
 {
   protected:
     virtual void handleMessage(cMessage *message) override;
 
   public:
-    virtual int getNumPushablePackets(cGate *gate) override { return -1; }
     virtual bool canPushSomePacket(cGate *gate) override { return true; }
     virtual bool canPushPacket(Packet *packet, cGate *gate) override { return true; }
 };

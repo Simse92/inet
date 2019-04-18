@@ -32,12 +32,6 @@ class INET_API IPacketProvider
     virtual ~IPacketProvider() {}
 
     /**
-     * Returns the number of poppable packets at the given gate. The value -1
-     * means the number is undefined. The gate must support popping packets.
-     */
-    virtual int getNumPoppablePackets(cGate *gate = nullptr) = 0;
-
-    /**
      * Returns false if the provider is empty at the given gate and no more
      * packets can be popped without raising an error. The gate must support
      * popping packets.

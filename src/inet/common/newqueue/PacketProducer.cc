@@ -38,7 +38,6 @@ void PacketProducer::initialize(int stage)
     else if (stage == INITSTAGE_LAST) {
         checkPushPacketSupport(outputGate);
 //        scheduleProductionTimer();
-        updateDisplayString();
     }
 }
 

@@ -26,7 +26,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketProvider : public PacketSourceBase, public PacketProviderBase, public IPacketQueueingElement
+class INET_API PacketProvider : public PacketProviderBase
 {
   protected:
     cGate *outputGate = nullptr;

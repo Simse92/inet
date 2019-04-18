@@ -32,12 +32,6 @@ class INET_API IPacketConsumer
     virtual ~IPacketConsumer() {}
 
     /**
-     * Returns the number of pushable packets at the given gate. The value -1
-     * means the number is undefined. The gate must support pushing packets.
-     */
-    virtual int getNumPushablePackets(cGate *gate = nullptr) = 0;
-
-    /**
      * Returns false if the consumer is full at the given gate and no more
      * packets can be pushed into it without raising an error. The gate must
      * support pushing packets.

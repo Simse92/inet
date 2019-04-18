@@ -19,11 +19,12 @@
 #define __INET_PACKETQUEUEINGELEMENTBASE_H
 
 #include "inet/common/newqueue/contract/IPacketConsumer.h"
+#include "inet/common/newqueue/contract/IPacketQueueingElement.h"
 
 namespace inet {
 namespace queue {
 
-class INET_API PacketQueueingElementBase : public cSimpleModule
+class INET_API PacketQueueingElementBase : public cSimpleModule, public IPacketQueueingElement
 {
   protected:
     virtual void animateSend(Packet *packet, cGate *gate);

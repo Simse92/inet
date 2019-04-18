@@ -67,13 +67,11 @@ class INET_API PacketQueue : public PacketQueueBase, public IPacketBuffer::ICall
     virtual void removePacket(Packet *packet) override;
 
     virtual bool supportsPushPacket(cGate *gate) override { return inputGate == gate; }
-    virtual int getNumPushablePackets(cGate *gate) override { return -1; }
     virtual bool canPushSomePacket(cGate *gate) override { return packetDropperFunction ? true : getMaxNumPackets() == -1 || getNumPackets() < getMaxNumPackets(); }
     virtual bool canPushPacket(Packet *packet, cGate *gate) override { return canPushSomePacket(gate); }
     virtual void pushPacket(Packet *packet, cGate *gate) override;
 
     virtual bool supportsPopPacket(cGate *gate) override { return outputGate == gate; }
-    virtual int getNumPoppablePackets(cGate *gate) override { return -1; }
     virtual bool canPopSomePacket(cGate *gate) override { return !isEmpty(); }
     virtual Packet *canPopPacket(cGate *gate) override { return !isEmpty() ? getPacket(0) : nullptr; }
     virtual Packet *popPacket(cGate *gate) override;

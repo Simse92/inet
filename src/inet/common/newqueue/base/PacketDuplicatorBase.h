@@ -25,7 +25,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketDuplicatorBase : public PacketQueueingElementBase, public IPacketDuplicator, public IPacketQueueingElement
+class INET_API PacketDuplicatorBase : public PacketQueueingElementBase, public IPacketDuplicator
 {
   protected:
     cGate *inputGate = nullptr;
@@ -45,7 +45,6 @@ class INET_API PacketDuplicatorBase : public PacketQueueingElementBase, public I
     virtual bool supportsPushPacket(cGate *gate) override { return true; }
     virtual bool supportsPopPacket(cGate *gate) override { return true; }
 
-    virtual int getNumPushablePackets(cGate *gate) override { return -1; }
     virtual bool canPushSomePacket(cGate *gate) override { return true; }
     virtual bool canPushPacket(Packet *packet, cGate *gate) override { return true; }
     virtual void pushPacket(Packet *packet, cGate *gate) override;

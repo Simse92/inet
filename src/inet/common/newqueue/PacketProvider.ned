@@ -29,7 +29,6 @@ simple PacketProvider extends PacketSourceBase like IPacketProvider
     parameters:
         volatile double providingInterval @unit(s) = default(0s);
         @class(PacketProvider);
-        @display("i=block/source");
         @signal[packetGenerated](type=inet::Packet);
         @statistic[packetGenerated](title="generated packets"; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
     gates:

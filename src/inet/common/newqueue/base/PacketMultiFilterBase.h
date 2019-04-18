@@ -26,7 +26,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketMultiFilterBase : public PacketQueueingElementBase, public IPacketFilter, public IPacketQueueingElement
+class INET_API PacketMultiFilterBase : public PacketQueueingElementBase, public IPacketFilter
 {
   protected:
     int numGates = 0;
@@ -49,13 +49,11 @@ class INET_API PacketMultiFilterBase : public PacketQueueingElementBase, public 
     virtual IPacketProvider *getProvider(cGate *gate) override { return this; }
 
     virtual bool supportsPushPacket(cGate *gate) override { return true; }
-    virtual int getNumPushablePackets(cGate *gate) override { return -1; }
     virtual bool canPushSomePacket(cGate *gate) override { return true; }
     virtual bool canPushPacket(Packet *packet, cGate *gate) override { return true; }
     virtual void pushPacket(Packet *packet, cGate *gate) override;
 
     virtual bool supportsPopPacket(cGate *gate) override { return true; }
-    virtual int getNumPoppablePackets(cGate *gate) override { return -1; }
     virtual bool canPopSomePacket(cGate *gate) override;
     virtual Packet *canPopPacket(cGate *gate) override { throw cRuntimeError("Invalid operation"); }
     virtual Packet *popPacket(cGate *gate) override;

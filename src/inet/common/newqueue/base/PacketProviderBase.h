@@ -18,16 +18,15 @@
 #ifndef __INET_PACKETPROVIDERBASE_H
 #define __INET_PACKETPROVIDERBASE_H
 
-#include <algorithm>
+#include "inet/common/newqueue/base/PacketSourceBase.h"
 #include "inet/common/newqueue/contract/IPacketProvider.h"
 
 namespace inet {
 namespace queue {
 
-class INET_API PacketProviderBase : public IPacketProvider
+class INET_API PacketProviderBase : public PacketSourceBase, public IPacketProvider
 {
   public:
-    virtual int getNumPoppablePackets(cGate *gate) override { return -1; }
     virtual bool canPopSomePacket(cGate *gate) override { return true; }
 };
 

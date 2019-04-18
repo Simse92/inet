@@ -25,19 +25,14 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketConsumer : public PacketConsumerBase, public IPacketQueueingElement
+class INET_API PacketConsumer : public PacketConsumerBase
 {
   protected:
-    const char *displayStringTextFormat = nullptr;
-
     cGate *inputGate = nullptr;
     IPacketProducer *producer = nullptr;
 
     cPar *consumptionIntervalParameter = nullptr;
     cMessage *consumptionTimer = nullptr;
-
-    int numPacket = 0;
-    b totalLength = b(0);
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
@@ -46,7 +41,6 @@ class INET_API PacketConsumer : public PacketConsumerBase, public IPacketQueuein
 
     virtual void scheduleConsumptionTimer();
     virtual void consumePacket(Packet *packet);
-    virtual void updateDisplayString();
 
   public:
     virtual ~PacketConsumer() { cancelAndDelete(consumptionTimer); }

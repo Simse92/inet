@@ -36,7 +36,6 @@ void PacketProvider::initialize(int stage)
     else if (stage == INITSTAGE_LAST) {
         checkPopPacketSupport(outputGate);
         scheduleProvidingTimer();
-        updateDisplayString();
     }
 }
 

@@ -28,6 +28,8 @@ void PacketSinkBase::initialize(int stage)
         WATCH(numPacket);
         WATCH(totalLength);
     }
+    else if (stage == INITSTAGE_LAST)
+        updateDisplayString();
 }
 
 void PacketSinkBase::updateDisplayString()

@@ -25,7 +25,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API MarkovScheduler : public PacketConsumerBase, public IPacketQueueingElement, public IPacketProducer
+class INET_API MarkovScheduler : public PacketConsumerBase, public IPacketProducer
 {
   protected:
     std::vector<cGate *> inputGates;

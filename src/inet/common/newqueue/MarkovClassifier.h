@@ -26,7 +26,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API MarkovClassifier : public PacketQueueingElementBase, public PacketProviderBase, public IPacketCollector, public IPacketQueueingElement
+class INET_API MarkovClassifier : public PacketProviderBase, public IPacketCollector
 {
   protected:
     cGate *inputGate = nullptr;

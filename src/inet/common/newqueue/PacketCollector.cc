@@ -27,19 +27,15 @@ Define_Module(PacketCollector);
 
 void PacketCollector::initialize(int stage)
 {
+    PacketSinkBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
-        displayStringTextFormat = par("displayStringTextFormat");
         inputGate = gate("in");
         provider = check_and_cast<IPacketProvider *>(getConnectedModule(inputGate));
         collectionIntervalParameter = &par("collectionInterval");
         collectionTimer = new cMessage("CollectionTimer");
-        WATCH(numPacket);
-        WATCH(totalLength);
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_LAST)
         checkPopPacketSupport(inputGate);
-        updateDisplayString();
-    }
 }
 
 void PacketCollector::handleMessage(cMessage *message)
@@ -78,25 +74,6 @@ void PacketCollector::handleCanPopPacket(cGate *gate)
         collectPacket();
         scheduleCollectionTimer();
     }
-}
-
-void PacketCollector::updateDisplayString()
-{
-    auto text = StringFormat::formatString(displayStringTextFormat, [&] (char directive) {
-        static std::string result;
-        switch (directive) {
-            case 'p':
-                result = std::to_string(numPacket);
-                break;
-            case 'l':
-                result = totalLength.str();
-                break;
-            default:
-                throw cRuntimeError("Unknown directive: %c", directive);
-        }
-        return result.c_str();
-    });
-    getDisplayString().setTagArg("t", 0, text);
 }
 
 } // namespace queue

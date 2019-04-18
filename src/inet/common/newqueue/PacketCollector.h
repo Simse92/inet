@@ -18,26 +18,21 @@
 #ifndef __INET_PACKETCOLLECTOR_H
 #define __INET_PACKETCOLLECTOR_H
 
-#include "inet/common/newqueue/base/PacketQueueingElementBase.h"
+#include "inet/common/newqueue/base/PacketSinkBase.h"
 #include "inet/common/newqueue/contract/IPacketCollector.h"
 #include "inet/common/newqueue/contract/IPacketQueueingElement.h"
 
 namespace inet {
 namespace queue {
 
-class INET_API PacketCollector : public PacketQueueingElementBase, public IPacketCollector, public IPacketQueueingElement
+class INET_API PacketCollector : public PacketSinkBase, public IPacketCollector
 {
   public:
-    const char *displayStringTextFormat = nullptr;
-
     cGate *inputGate = nullptr;
     IPacketProvider *provider = nullptr;
 
     cPar *collectionIntervalParameter = nullptr;
     cMessage *collectionTimer = nullptr;
-
-    int numPacket = 0;
-    b totalLength = b(0);
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
@@ -46,7 +41,6 @@ class INET_API PacketCollector : public PacketQueueingElementBase, public IPacke
 
     virtual void scheduleCollectionTimer();
     virtual void collectPacket();
-    virtual void updateDisplayString();
 
   public:
     virtual ~PacketCollector() { cancelAndDelete(collectionTimer); }

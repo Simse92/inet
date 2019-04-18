@@ -26,7 +26,7 @@
 namespace inet {
 namespace queue {
 
-class INET_API PacketDemultiplexer : public PacketQueueingElementBase, public PacketProviderBase, public IPacketCollector, public IPacketQueueingElement
+class INET_API PacketDemultiplexer : public PacketProviderBase, public IPacketCollector
 {
   protected:
     cGate *inputGate = nullptr;

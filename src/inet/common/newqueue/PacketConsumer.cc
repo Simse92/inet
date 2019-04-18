@@ -27,14 +27,12 @@ Define_Module(PacketConsumer);
 
 void PacketConsumer::initialize(int stage)
 {
+    PacketSinkBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
-        displayStringTextFormat = par("displayStringTextFormat");
         inputGate = gate("in");
         producer = dynamic_cast<IPacketProducer *>(getConnectedModule(inputGate));
         consumptionIntervalParameter = &par("consumptionInterval");
         consumptionTimer = new cMessage("ConsumptionTimer");
-        WATCH(numPacket);
-        WATCH(totalLength);
     }
     else if (stage == INITSTAGE_LAST) {
         checkPushPacketSupport(inputGate);
@@ -81,25 +79,6 @@ void PacketConsumer::consumePacket(Packet *packet)
     emit(packetDroppedSignal, packet, &details);
     updateDisplayString();
     delete packet;
-}
-
-void PacketConsumer::updateDisplayString()
-{
-    auto text = StringFormat::formatString(displayStringTextFormat, [&] (char directive) {
-        static std::string result;
-        switch (directive) {
-            case 'p':
-                result = std::to_string(numPacket);
-                break;
-            case 'l':
-                result = totalLength.str();
-                break;
-            default:
-                throw cRuntimeError("Unknown directive: %c", directive);
-        }
-        return result.c_str();
-    });
-    getDisplayString().setTagArg("t", 0, text);
 }
 
 } // namespace queue
