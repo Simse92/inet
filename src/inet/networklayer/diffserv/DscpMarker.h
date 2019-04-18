@@ -19,9 +19,9 @@
 #define __INET_DSCPMARKER_H
 
 #include "inet/common/INETDefs.h"
-#include "inet/common/newqueue/base/PacketConsumerBase.h"
+#include "inet/common/newqueue/base/PacketQueueingElementBase.h"
+#include "inet/common/newqueue/contract/IPacketConsumer.h"
 #include "inet/common/newqueue/contract/IPacketProducer.h"
-#include "inet/common/newqueue/contract/IPacketQueueingElement.h"
 #include "inet/common/packet/Packet.h"
 
 namespace inet {
@@ -29,7 +29,7 @@ namespace inet {
 /**
  * DSCP Marker.
  */
-class INET_API DscpMarker : public queue::PacketConsumerBase, public queue::IPacketProducer, public queue::IPacketQueueingElement
+class INET_API DscpMarker : public queue::PacketQueueingElementBase, public queue::IPacketConsumer, public queue::IPacketProducer
 {
   protected:
     std::vector<int> dscps;
@@ -50,8 +50,11 @@ class INET_API DscpMarker : public queue::PacketConsumerBase, public queue::IPac
 
   protected:
     virtual void initialize() override;
-    virtual void pushPacket(Packet *packet, cGate *gate = nullptr) override;
     virtual void refreshDisplay() const override;
+
+    virtual bool canPushSomePacket(cGate *gate = nullptr) { return true; }
+    virtual bool canPushPacket(Packet *packet, cGate *gate = nullptr) { return true; }
+    virtual void pushPacket(Packet *packet, cGate *gate = nullptr) override;
 
     virtual bool markPacket(Packet *msg, int dscp);
 };
