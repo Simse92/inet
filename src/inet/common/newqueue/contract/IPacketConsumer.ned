@@ -17,6 +17,11 @@
 
 package inet.common.newqueue.contract;
 
+//
+// This module interface is implemented by packet consumer modules. A packet
+// consumer is a passive module with one input. Packets are pushed into the
+// packet consumer by the connected module repeatedly over time.
+//
 moduleinterface IPacketConsumer
 {
     parameters:

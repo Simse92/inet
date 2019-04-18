@@ -17,6 +17,11 @@
 
 package inet.common.newqueue.contract;
 
+//
+// This module interface is implemented by packet provider modules. A packet
+// provider is a passive module with one output. Packets are popped from the
+// packet provider by the connected module repeatedly over time.
+//
 moduleinterface IPacketProvider
 {
     parameters:

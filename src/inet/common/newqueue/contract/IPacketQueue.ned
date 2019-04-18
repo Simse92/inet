@@ -17,6 +17,12 @@
 
 package inet.common.newqueue.contract;
 
+//
+// This module interface is implemented by packet queue modules. A packet queue
+// is a passive module which has one passive input and one passive output.
+// Packets pushed into the passive input are either stored or dropped. Packets
+// popped from the passive output are provided from the stored packets.
+//
 moduleinterface IPacketQueue extends IPacketConsumer, IPacketProvider
 {
     parameters:

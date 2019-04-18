@@ -17,6 +17,11 @@
 
 package inet.common.newqueue.contract;
 
+//
+// This module interface is implemented by packet collector modules. A packet
+// collector is an active module with one input. Packets are actively popped
+// by the connected module repeatedly over time.
+//
 moduleinterface IPacketCollector
 {
     parameters:

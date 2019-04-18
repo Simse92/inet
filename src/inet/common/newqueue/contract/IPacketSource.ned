@@ -17,6 +17,9 @@
 
 package inet.common.newqueue.contract;
 
+//
+// This module interface is implemented by packet source modules.
+//
 moduleinterface IPacketSource
 {
     parameters:

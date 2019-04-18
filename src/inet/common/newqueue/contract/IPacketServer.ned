@@ -17,6 +17,12 @@
 
 package inet.common.newqueue.contract;
 
+//
+// This module interface is implemented by packet server modules. A packet
+// server is an active module which has one active input to one active output.
+// Packets are popped from the connected input module and pushed into the
+// connected output module with an optional delay but without reordering.
+//
 moduleinterface IPacketServer extends IPacketCollector, IPacketProducer
 {
     parameters:

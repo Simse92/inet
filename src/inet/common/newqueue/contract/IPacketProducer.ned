@@ -17,6 +17,11 @@
 
 package inet.common.newqueue.contract;
 
+//
+// This module interface is implemented by packet producer modules. A packet
+// producer is an active module with one output. Packets are actively pushed
+// into the connected module repeatedly over time.
+//
 moduleinterface IPacketProducer
 {
     parameters:
