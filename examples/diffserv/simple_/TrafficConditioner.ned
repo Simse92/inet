@@ -48,8 +48,11 @@ module TrafficConditioner like ITrafficConditioner
         efMeter: TokenBucketMeter {
             @display("p=400,100");
         }
+        mux: PacketMultiplexer {
+            @display("p=350,300");
+        }
         defaultMeter: SingleRateThreeColorMeter {
-            @display("p=400,300");
+            @display("p=450,300");
         }
         efMarker: DscpMarker {
             dscps = "EF";
@@ -95,13 +98,14 @@ module TrafficConditioner like ITrafficConditioner
         mfClassifier.out++ --> af11Marker.in++;
         mfClassifier.out++ --> af21Marker.in++;
         mfClassifier.defaultOut --> beMarker.in++;
-        efMarker.out --> efMeter.in++;
+        efMarker.out --> efMeter.in;
         efMeter.greenOut --> { @display("ls=green"); } --> join.in++;
         efMeter.redOut --> { @display("ls=red"); } --> af11Marker2.in++;
         af11Marker2.out --> join.in++;
-        af11Marker.out --> defaultMeter.in++;
-        af21Marker.out --> defaultMeter.in++;
-        beMarker.out --> defaultMeter.in++;
+        af11Marker.out --> mux.in++;
+        af21Marker.out --> mux.in++;
+        beMarker.out --> mux.in++;
+        mux.out --> defaultMeter.in;
         defaultMeter.greenOut --> { @display("ls=green"); } --> join.in++;
         defaultMeter.yellowOut --> { @display("ls=yellow"); } --> baClassifier.in;
         baClassifier.out++ --> af13Marker.in++;
