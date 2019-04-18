@@ -22,7 +22,7 @@ import inet.common.newqueue.contract.IPacketProducer;
 
 //
 // This module connects multiple packet producers to one packet consumer. When
-// a packet is pushed by the connected packet producer, then the multiplexer
+// a packet is pushed by one of the connected packet producers, then the multiplexer
 // simply pushes the packet to the connected packet consumer.
 //
 simple PacketMultiplexer like IPacketProducer // TODO: IPacketConsumer // in gate is vector

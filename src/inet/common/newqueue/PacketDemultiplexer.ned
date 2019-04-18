@@ -22,7 +22,7 @@ import inet.common.newqueue.contract.IPacketProvider;
 
 //
 // This module connects multiple packet collectors to one packet provider. When
-// a packet is popped by the connected packet provider, then the demultiplexer
+// a packet is popped by one of the connected packet providers, then the demultiplexer
 // simply pops a packet from the connected packet provider.
 //
 simple PacketDemultiplexer like IPacketCollector // TODO: , IPacketProvider // out gate is vector
