@@ -28,8 +28,7 @@ Define_Module(TwoRateThreeColorMeter);
 
 void TwoRateThreeColorMeter::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
-
+    PacketMeterBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
         numRcvd = 0;
         numYellow = 0;
@@ -56,7 +55,7 @@ void TwoRateThreeColorMeter::pushPacket(Packet *packet, cGate *inputGate)
 {
     numRcvd++;
     cGate *outputGate = nullptr;
-    int color = classifyPacket(packet);
+    int color = meterPacket(packet);
     switch (color) {
         case GREEN:
             outputGate = gate("greenOut");
@@ -87,7 +86,7 @@ void TwoRateThreeColorMeter::refreshDisplay() const
     getDisplayString().setTagArg("t", 0, buf);
 }
 
-int TwoRateThreeColorMeter::classifyPacket(Packet *packet)
+int TwoRateThreeColorMeter::meterPacket(Packet *packet)
 {
     // update token buckets
     simtime_t currentTime = simTime();

@@ -28,8 +28,7 @@ Define_Module(TokenBucketMeter);
 
 void TokenBucketMeter::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
-
+    PacketMeterBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
         numRcvd = 0;
         numRed = 0;
@@ -52,7 +51,7 @@ void TokenBucketMeter::pushPacket(Packet *packet, cGate *inputGate)
 {
     numRcvd++;
     cGate *outputGate = nullptr;
-    int color = classifyPacket(packet);
+    int color = meterPacket(packet);
     if (color == GREEN)
         outputGate = gate("greenOut");
     else {
@@ -72,7 +71,7 @@ void TokenBucketMeter::refreshDisplay() const
     getDisplayString().setTagArg("t", 0, buf);
 }
 
-int TokenBucketMeter::classifyPacket(Packet *packet)
+int TokenBucketMeter::meterPacket(Packet *packet)
 {
     // update token buckets
     simtime_t currentTime = simTime();

@@ -38,18 +38,21 @@ Define_Module(DscpMarker);
 
 simsignal_t DscpMarker::packetMarkedSignal = registerSignal("packetMarked");
 
-void DscpMarker::initialize()
+void DscpMarker::initialize(int stage)
 {
-    parseDSCPs(par("dscps"), "dscps", dscps);
-    if (dscps.empty())
-        dscps.push_back(DSCP_BE);
-    while ((int)dscps.size() < gateSize("in"))
-        dscps.push_back(dscps.back());
+    PacketQueueingElementBase::initialize(stage);
+    if (stage == INITSTAGE_LOCAL) {
+        parseDSCPs(par("dscps"), "dscps", dscps);
+        if (dscps.empty())
+            dscps.push_back(DSCP_BE);
+        while ((int)dscps.size() < gateSize("in"))
+            dscps.push_back(dscps.back());
 
-    numRcvd = 0;
-    numMarked = 0;
-    WATCH(numRcvd);
-    WATCH(numMarked);
+        numRcvd = 0;
+        numMarked = 0;
+        WATCH(numRcvd);
+        WATCH(numMarked);
+    }
 }
 
 void DscpMarker::pushPacket(Packet *packet, cGate *inputGate)

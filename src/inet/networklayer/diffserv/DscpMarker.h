@@ -49,7 +49,7 @@ class INET_API DscpMarker : public queue::PacketQueueingElementBase, public queu
     virtual void handleCanPushPacket(cGate *gate) override { }
 
   protected:
-    virtual void initialize() override;
+    virtual void initialize(int stage) override;
     virtual void refreshDisplay() const override;
 
     virtual bool canPushSomePacket(cGate *gate = nullptr) { return true; }

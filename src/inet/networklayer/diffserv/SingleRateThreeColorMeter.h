@@ -21,7 +21,7 @@
 
 #include "inet/common/INETDefs.h"
 #include "inet/common/INETMath.h"
-#include "inet/common/newqueue/base/PacketClassifierBase.h"
+#include "inet/networklayer/diffserv/PacketMeterBase.h"
 
 namespace inet {
 
@@ -33,7 +33,7 @@ namespace inet {
  *
  * See RFC 2697.
  */
-class INET_API SingleRateThreeColorMeter : public queue::PacketClassifierBase
+class INET_API SingleRateThreeColorMeter : public PacketMeterBase
 {
   protected:
     double CIR = NaN;    // Commited Information Rate (bits/sec)
@@ -58,7 +58,7 @@ class INET_API SingleRateThreeColorMeter : public queue::PacketClassifierBase
     virtual void refreshDisplay() const override;
 
     virtual void pushPacket(Packet *packet, cGate *gate = nullptr) override;
-    virtual int classifyPacket(Packet *packet) override;
+    virtual int meterPacket(Packet *packet) override;
 };
 
 } // namespace inet

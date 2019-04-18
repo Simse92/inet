@@ -96,7 +96,7 @@ module DiffservQueue extends CompoundPacketQueue
 
     connections:
         in --> classifier.in;
-        classifier.out++ --> efMeter.in++;
+        classifier.out++ --> efMeter.in;
         classifier.out++ --> af1xQueue.afx1In;
         classifier.out++ --> af1xQueue.afx2In;
         classifier.out++ --> af1xQueue.afx3In;
