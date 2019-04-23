@@ -52,6 +52,8 @@ cmdenv-event-banners = false
 Providing packet provider-0.
 Passing through packet provider-0.
 Collecting packet provider-0.
+
+Running simulation...
 Providing packet provider-1.
 Filtering out packet provider-1.
 Providing packet provider-2.

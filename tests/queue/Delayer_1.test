@@ -38,6 +38,8 @@ cmdenv-event-banners = false
 %contains: stdout
 Producing packet producer-0.
 Delaying packet producer-0.
+
+Running simulation...
 Producing packet producer-1.
 Delaying packet producer-1.
 Consuming packet producer-0.

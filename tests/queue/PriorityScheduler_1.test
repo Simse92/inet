@@ -56,6 +56,8 @@ Scheduling packet producer1-0.
 Collecting packet producer1-0.
 Producing packet producer2-0.
 Pushing packet producer2-0 into the queue.
+
+Running simulation...
 Popping packet producer2-0 from the queue.
 Scheduling packet producer2-0.
 Collecting packet producer2-0.

@@ -94,6 +94,8 @@ Popping packet producer-0 from the queue.
 Removing packet producer-0 from the buffer.
 Scheduling packet producer-0.
 Collecting packet producer-0.
+
+Running simulation...
 Producing packet producer-1.
 Classifying packet producer-1.
 Pushing packet producer-1 into the queue.

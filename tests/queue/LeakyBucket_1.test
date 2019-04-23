@@ -40,6 +40,8 @@ Producing packet producer-0.
 Pushing packet producer-0 into the queue.
 Popping packet producer-0 from the queue.
 Processing packet producer-0 started.
+
+Running simulation...
 Processing packet producer-0 ended.
 Consuming packet producer-0.
 Producing packet producer-1.

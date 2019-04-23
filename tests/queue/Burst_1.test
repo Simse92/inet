@@ -44,6 +44,8 @@ cmdenv-event-banners = false
 %contains: stdout
 Producing packet producer1-0.
 Consuming packet producer1-0.
+
+Running simulation...
 Producing packet producer1-1.
 Consuming packet producer1-1.
 Producing packet producer1-2.

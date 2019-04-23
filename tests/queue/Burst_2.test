@@ -44,6 +44,8 @@ cmdenv-event-banners = false
 %contains: stdout
 Providing packet provider-0.
 Collecting packet provider-0.
+
+Running simulation...
 Providing packet provider-1.
 Collecting packet provider-1.
 Providing packet provider-2.

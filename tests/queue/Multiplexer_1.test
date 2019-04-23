@@ -43,6 +43,8 @@ cmdenv-event-banners = false
 Producing packet producer[0]-0.
 Forwarding pushed packet producer[0]-0.
 Consuming packet producer[0]-0.
+
+Running simulation...
 Producing packet producer[1]-0.
 Forwarding pushed packet producer[1]-0.
 Consuming packet producer[1]-0.

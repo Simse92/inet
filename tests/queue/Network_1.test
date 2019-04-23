@@ -93,6 +93,8 @@ Producing packet sourceApplication-0.
 Pushing packet sourceApplication-0 into the queue.
 Popping packet sourceApplication-0 from the queue.
 Processing packet sourceApplication-0 started.
+
+Running simulation...
 Processing packet sourceApplication-0 ended.
 Delaying packet sourceApplication-0.
 Producing packet sourceApplication-1.

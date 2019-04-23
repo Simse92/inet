@@ -81,6 +81,8 @@ Pushing packet producer-0 into the queue.
 Popping packet producer-0 from the queue.
 Scheduling packet producer-0.
 Collecting packet producer-0.
+
+Running simulation...
 Producing packet producer-1.
 Classifying packet producer-1.
 Passing through packet producer-1.
@@ -98,7 +100,7 @@ Passing through packet producer-3.
 Pushing packet producer-3 into the queue.
 Producing packet producer-4.
 Classifying packet producer-4.
-Filtering packet producer-4.
+Filtering out packet producer-4.
 Popping packet producer-2 from the queue.
 Scheduling packet producer-2.
 Collecting packet producer-2.
@@ -108,10 +110,10 @@ Passing through packet producer-5.
 Pushing packet producer-5 into the queue.
 Producing packet producer-6.
 Classifying packet producer-6.
-Filtering packet producer-6.
+Filtering out packet producer-6.
 Producing packet producer-7.
 Classifying packet producer-7.
-Filtering packet producer-7.
+Filtering out packet producer-7.
 Popping packet producer-3 from the queue.
 Scheduling packet producer-3.
 Collecting packet producer-3.
@@ -142,10 +144,10 @@ Passing through packet producer-11.
 Pushing packet producer-11 into the queue.
 Producing packet producer-12.
 Classifying packet producer-12.
-Filtering packet producer-12.
+Filtering out packet producer-12.
 Producing packet producer-13.
 Classifying packet producer-13.
-Filtering packet producer-13.
+Filtering out packet producer-13.
 Popping packet producer-10 from the queue.
 Scheduling packet producer-10.
 Collecting packet producer-10.
@@ -155,10 +157,10 @@ Passing through packet producer-14.
 Pushing packet producer-14 into the queue.
 Producing packet producer-15.
 Classifying packet producer-15.
-Filtering packet producer-15.
+Filtering out packet producer-15.
 Producing packet producer-16.
 Classifying packet producer-16.
-Filtering packet producer-16.
+Filtering out packet producer-16.
 Popping packet producer-14 from the queue.
 Scheduling packet producer-14.
 Collecting packet producer-14.

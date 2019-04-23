@@ -56,6 +56,8 @@ cmdenv-event-banners = false
 Producing packet producer-0.
 Classifying packet producer-0.
 Consuming packet producer-0.
+
+Running simulation...
 Producing packet producer-1.
 Classifying packet producer-1.
 Consuming packet producer-1.
