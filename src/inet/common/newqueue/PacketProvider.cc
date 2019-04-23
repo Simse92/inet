@@ -29,20 +29,25 @@ void PacketProvider::initialize(int stage)
     PacketSourceBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
         outputGate = gate("out");
-        collector = check_and_cast<IPacketCollector *>(getConnectedModule(outputGate));
+        collector = dynamic_cast<IPacketCollector *>(getConnectedModule(outputGate));
         providingIntervalParameter = &par("providingInterval");
         providingTimer = new cMessage("ProvidingTimer");
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         checkPopPacketSupport(outputGate);
-        scheduleProvidingTimer();
+        if (collector != nullptr)
+            collector->handleCanPopPacket(outputGate);
     }
 }
 
 void PacketProvider::handleMessage(cMessage *message)
 {
-    ASSERT(message == providingTimer);
-    collector->handleCanPopPacket(outputGate);
+    if (message == providingTimer) {
+        if (collector != nullptr)
+            collector->handleCanPopPacket(outputGate);
+    }
+    else
+        throw cRuntimeError("Unknown message");
 }
 
 void PacketProvider::scheduleProvidingTimer()
@@ -86,6 +91,7 @@ Packet *PacketProvider::providePacket(cGate *gate)
         nextPacket = nullptr;
     }
     EV_INFO << "Providing packet " << packet->getName() << "." << endl;
+    updateDisplayString();
     return packet;
 }
 

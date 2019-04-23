@@ -37,10 +37,12 @@ void CompoundPacketQueue::initialize(int stage)
         provider = check_and_cast<IPacketProvider *>(outputGate->getPathStartGate()->getOwnerModule());
         collection = check_and_cast<IPacketCollection *>(provider);
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         checkPushPacketSupport(inputGate);
         checkPopPacketSupport(outputGate);
     }
+    else if (stage == INITSTAGE_LAST)
+        updateDisplayString();
 }
 
 int CompoundPacketQueue::getNumPackets()

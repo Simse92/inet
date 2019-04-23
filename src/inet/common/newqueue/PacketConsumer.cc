@@ -18,7 +18,6 @@
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/PacketConsumer.h"
 #include "inet/common/Simsignals.h"
-#include "inet/common/StringFormat.h"
 
 namespace inet {
 namespace queue {
@@ -34,10 +33,10 @@ void PacketConsumer::initialize(int stage)
         consumptionIntervalParameter = &par("consumptionInterval");
         consumptionTimer = new cMessage("ConsumptionTimer");
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         checkPushPacketSupport(inputGate);
-        scheduleConsumptionTimer();
-        updateDisplayString();
+        if (producer != nullptr)
+            producer->handleCanPushPacket(inputGate);
     }
 }
 

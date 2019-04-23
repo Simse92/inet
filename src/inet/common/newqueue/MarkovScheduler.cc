@@ -55,7 +55,7 @@ void MarkovScheduler::initialize(int stage)
         scheduleWaitTimer();
         WATCH(state);
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         for (auto inputGate : inputGates)
             checkPushPacketSupport(inputGate);
         checkPushPacketSupport(outputGate);

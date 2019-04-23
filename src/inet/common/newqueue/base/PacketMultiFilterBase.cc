@@ -59,13 +59,13 @@ void PacketMultiFilterBase::initialize(int stage)
 // TODO: several functions are copied from PacketFilterBase and extended with multiple gate support via indices
 void PacketMultiFilterBase::pushPacket(Packet *packet, cGate *gate)
 {
-    if (!matchesPacket(gate, packet)) {
+    if (matchesPacket(gate, packet)) {
         EV_INFO << "Passing through packet " << packet->getName() << "." << endl;
         animateSend(packet, outputGates[gate->getIndex()]);
         consumers[gate->getIndex()]->pushPacket(packet, outputGates[gate->getIndex()]->getPathEndGate());
     }
     else {
-        EV_INFO << "Filtering packet " << packet->getName() << "." << endl;
+        EV_INFO << "Filtering out packet " << packet->getName() << "." << endl;
         PacketDropDetails details;
         details.setReason(OTHER_PACKET_DROP);
         emit(packetDroppedSignal, packet, &details);
@@ -79,11 +79,11 @@ bool PacketMultiFilterBase::canPopSomePacket(cGate *gate)
     auto providerGate = inputGates[gate->getIndex()]->getPathStartGate();
     while (true) {
         auto packet = provider->canPopPacket(providerGate);
-        if (!matchesPacket(gate, packet))
+        if (matchesPacket(gate, packet))
             return true;
         else {
             packet = provider->popPacket(providerGate);
-            EV_INFO << "Filtering packet " << packet->getName() << "." << endl;
+            EV_INFO << "Filtering out packet " << packet->getName() << "." << endl;
             PacketDropDetails details;
             details.setReason(OTHER_PACKET_DROP);
             emit(packetDroppedSignal, packet, &details);
@@ -98,13 +98,13 @@ Packet *PacketMultiFilterBase::popPacket(cGate *gate)
     auto providerGate = inputGates[gate->getIndex()]->getPathStartGate();
     while (true) {
         auto packet = provider->popPacket(providerGate);
-        if (!matchesPacket(gate, packet)) {
+        if (matchesPacket(gate, packet)) {
             EV_INFO << "Passing through packet " << packet->getName() << "." << endl;
             animateSend(packet, gate);
             return packet;
         }
         else {
-            EV_INFO << "Filtering packet " << packet->getName() << "." << endl;
+            EV_INFO << "Filtering out packet " << packet->getName() << "." << endl;
             PacketDropDetails details;
             details.setReason(OTHER_PACKET_DROP);
             emit(packetDroppedSignal, packet, &details);

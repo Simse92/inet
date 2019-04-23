@@ -33,11 +33,11 @@ void ThresholdDropper::initialize(int stage)
 
 bool ThresholdDropper::matchesPacket(cGate *gate, Packet *packet)
 {
-    if (frameCapacity >= 0 && (getNumPackets() + 1) > frameCapacity)
-        return true;
-    if (dataCapacity >= b(-1) && (getTotalLength() + packet->getTotalLength()) > dataCapacity)
-        return true;
-    return false;
+    if (frameCapacity != -1 && (getNumPackets() + 1) > frameCapacity)
+        return false;
+    if (dataCapacity != b(-1) && (getTotalLength() + packet->getTotalLength()) > dataCapacity)
+        return false;
+    return true;
 }
 
 } // namespace queue

@@ -29,7 +29,7 @@ void PacketServerBase::initialize(int stage)
         outputGate = gate("out");
         consumer = check_and_cast<IPacketConsumer *>(getConnectedModule(outputGate));
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         checkPopPacketSupport(inputGate);
         checkPushPacketSupport(outputGate);
     }

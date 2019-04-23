@@ -107,25 +107,25 @@ bool RedDropper::matchesPacket(cGate *gate, Packet *packet)
         {
             EV << "Random early packet drop (avg queue len=" << avg << ", pa=" << pa << ")\n";
             count[i] = 0;
-            return true;
+            return false;
         }
     }
     else if (avg >= maxth) {
         EV << "Avg queue len " << avg << " >= maxth, dropping packet.\n";
         count[i] = 0;
-        return true;
+        return false;
     }
     else if (queueLength >= maxth) {    // maxth is also the "hard" limit
         EV << "Queue len " << queueLength << " >= maxth, dropping packet.\n";
         count[i] = 0;
-        return true;
+        return false;
     }
     else
     {
         count[i] = -1;
     }
 
-    return false;
+    return true;
 }
 
 // TODO: revive this code, this is more complicated than it seems at first, because the output queues can be popped anytime

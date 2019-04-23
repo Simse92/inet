@@ -36,7 +36,7 @@ void PacketDemultiplexer::initialize(int stage)
         }
         provider = check_and_cast<IPacketProvider *>(getConnectedModule(inputGate));
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         checkPopPacketSupport(inputGate);
         for (auto outputGate : outputGates)
             checkPopPacketSupport(outputGate);

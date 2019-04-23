@@ -33,7 +33,7 @@ void PacketClassifierBase::initialize(int stage)
             consumers.push_back(consumer);
         }
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         for (auto outputGate : outputGates)
             checkPushPacketSupport(outputGate);
         checkPushPacketSupport(inputGate);

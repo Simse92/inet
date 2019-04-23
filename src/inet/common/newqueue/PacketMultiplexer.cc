@@ -35,7 +35,7 @@ void PacketMultiplexer::initialize(int stage)
         outputGate = gate("out");
         consumer = dynamic_cast<IPacketConsumer *>(getConnectedModule(outputGate));
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         for (auto inputGate : inputGates)
             checkPushPacketSupport(inputGate);
         if (consumer != nullptr)

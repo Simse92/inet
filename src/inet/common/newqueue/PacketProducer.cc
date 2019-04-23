@@ -18,7 +18,6 @@
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/PacketProducer.h"
 #include "inet/common/Simsignals.h"
-#include "inet/common/StringFormat.h"
 
 namespace inet {
 namespace queue {
@@ -29,16 +28,13 @@ void PacketProducer::initialize(int stage)
 {
     PacketSourceBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
-        displayStringTextFormat = par("displayStringTextFormat");
         outputGate = gate("out");
         consumer = check_and_cast<IPacketConsumer *>(getConnectedModule(outputGate));
         productionIntervalParameter = &par("productionInterval");
         productionTimer = new cMessage("ProductionTimer");
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING)
         checkPushPacketSupport(outputGate);
-//        scheduleProductionTimer();
-    }
 }
 
 void PacketProducer::handleMessage(cMessage *message)

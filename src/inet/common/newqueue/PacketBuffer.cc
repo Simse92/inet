@@ -31,6 +31,8 @@ void PacketBuffer::initialize(int stage)
         frameCapacity = par("frameCapacity");
         dataCapacity = b(par("dataCapacity"));
     }
+    else if (stage == INITSTAGE_LAST)
+        updateDisplayString();
 }
 
 bool PacketBuffer::isOverloaded()

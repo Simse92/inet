@@ -47,13 +47,15 @@ void PacketQueue::initialize(int stage)
         const char *dropperClass = par("dropperClass");
         if (*dropperClass != '\0')
             packetDropperFunction = check_and_cast<IPacketDropperFunction *>(createOne(dropperClass));
-        updateDisplayString();
-        scheduleAt(simTime(), new cMessage("StartConsuming"));
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         checkPushPacketSupport(inputGate);
         checkPopPacketSupport(outputGate);
+        if (producer != nullptr)
+            producer->handleCanPushPacket(inputGate);
     }
+    else if (stage == INITSTAGE_LAST)
+        updateDisplayString();
 }
 
 void PacketQueue::handleMessage(cMessage *message)

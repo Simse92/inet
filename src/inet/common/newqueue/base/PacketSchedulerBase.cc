@@ -34,7 +34,7 @@ void PacketSchedulerBase::initialize(int stage)
             providers.push_back(provider);
         }
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         for (auto inputGate : inputGates)
             checkPopPacketSupport(inputGate);
         checkPopPacketSupport(outputGate);

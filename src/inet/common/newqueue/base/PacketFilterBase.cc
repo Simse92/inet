@@ -32,7 +32,7 @@ void PacketFilterBase::initialize(int stage)
         provider = dynamic_cast<IPacketProvider *>(getConnectedModule(inputGate));
         consumer = dynamic_cast<IPacketConsumer *>(getConnectedModule(outputGate));
     }
-    else if (stage == INITSTAGE_LAST) {
+    else if (stage == INITSTAGE_QUEUEING) {
         if (consumer != nullptr) {
             checkPushPacketSupport(inputGate);
             checkPushPacketSupport(outputGate);

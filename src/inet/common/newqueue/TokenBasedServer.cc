@@ -32,10 +32,12 @@ void TokenBasedServer::initialize(int stage)
         numTokens = par("intialNumTokens");
         maxNumTokens = par("maxNumTokens");
         tokenProductionTimer = new cMessage("TokenProductionTimer");
-        scheduleTokenProductionTimer();
-        updateDisplayString();
         WATCH(numTokens);
     }
+    else if (stage == INITSTAGE_QUEUEING)
+        scheduleTokenProductionTimer();
+    else if (stage == INITSTAGE_LAST)
+        updateDisplayString();
 }
 
 void TokenBasedServer::handleMessage(cMessage *message)

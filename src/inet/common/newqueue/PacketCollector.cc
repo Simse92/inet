@@ -18,7 +18,6 @@
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/newqueue/PacketCollector.h"
 #include "inet/common/Simsignals.h"
-#include "inet/common/StringFormat.h"
 
 namespace inet {
 namespace queue {
@@ -34,7 +33,7 @@ void PacketCollector::initialize(int stage)
         collectionIntervalParameter = &par("collectionInterval");
         collectionTimer = new cMessage("CollectionTimer");
     }
-    else if (stage == INITSTAGE_LAST)
+    else if (stage == INITSTAGE_QUEUEING)
         checkPopPacketSupport(inputGate);
 }
 
